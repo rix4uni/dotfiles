@@ -122,14 +122,92 @@ config.hyperlink_rules = {
   },
 }
 
+-- Set a leader key (e.g., Ctrl+Space)
+config.leader = { key = 'Space', mods = 'CTRL', timeout_milliseconds = 1000 }
+
 -- Hot-Key Configuration
 config.keys = {
   -- Maximize fullscreen
   {key = 'F11', action = wezterm.action.ToggleFullScreen},
+  {key = 'm', mods = 'CTRL|LEADER', action = wezterm.action.TogglePaneZoomState},
+
+  -- Create a tab
+  {key = 't', mods = 'CTRL|LEADER', action = act.SpawnTab 'CurrentPaneDomain'},
+
+  -- Move between tabs using <Leader>n for the next tab, <Leader>p for the previous
+  {key = 'n', mods = 'CTRL|LEADER', action = wezterm.action.ActivateTabRelative(1)},
+  {key = 'p', mods = 'CTRL|LEADER', action = wezterm.action.ActivateTabRelative(-1)},
+
+  -- Displaying each tab with their index
+  {key = 'w', mods = 'CTRL|LEADER', action = act.ShowTabNavigator},
+
+  -- Kill/Close a tab without needing to type "exit", if a process is stuck
+  {key = 'q', mods = 'CTRL|LEADER', action = act.CloseCurrentTab{ confirm = true }},
+
+  -- Show list of workspaces
+  {key = 's', mods = 'CTRL|LEADER', action = act.ShowLauncherArgs { flags = 'WORKSPACES' }},
+
+  -- Horizontal split
+  {key = '\\', mods = 'CTRL|LEADER', action = wezterm.action.SplitPane {direction = 'Down', size = { Percent = 50 }}},
+
+  -- Vertical split
+  {key = '-', mods = 'CTRL|LEADER', action = wezterm.action.SplitPane {direction = 'Right', size = { Percent = 50 }}},
+
+  -- Move between panes using CTRL + h/j/k/l
+  { key = 'h', mods = 'CTRL', action = act.EmitEvent("move-left") },
+  { key = 'j', mods = 'CTRL', action = act.EmitEvent("move-down") },
+  { key = 'k', mods = 'CTRL', action = act.EmitEvent("move-up") },
+  { key = 'l', mods = 'CTRL', action = act.EmitEvent("move-right") },
+
+  -- Resize panes using ALT + h/j/k/l
+  { key = 'h', mods = 'ALT', action = act.EmitEvent("resize-left") },
+  { key = 'j', mods = 'ALT', action = act.EmitEvent("resize-down") },
+  { key = 'k', mods = 'ALT', action = act.EmitEvent("resize-up") },
+  { key = 'l', mods = 'ALT', action = act.EmitEvent("resize-right") },
 }
+
+-- --------------------------------------------------------------------
+-- FUNCTIONS AND EVENT BINDINGS
+-- --------------------------------------------------------------------
+
+-- Event handlers to make pane navigation work
+wezterm.on("move-left", function(window, pane)
+  window:perform_action(act.ActivatePaneDirection("Left"), pane)
+end)
+wezterm.on("move-down", function(window, pane)
+  window:perform_action(act.ActivatePaneDirection("Down"), pane)
+end)
+wezterm.on("move-up", function(window, pane)
+  window:perform_action(act.ActivatePaneDirection("Up"), pane)
+end)
+wezterm.on("move-right", function(window, pane)
+  window:perform_action(act.ActivatePaneDirection("Right"), pane)
+end)
+
+-- Event handlers to make pane resize work
+wezterm.on("resize-left", function(window, pane)
+  window:perform_action(act.AdjustPaneSize { "Left", 3 }, pane)
+end)
+
+wezterm.on("resize-down", function(window, pane)
+  window:perform_action(act.AdjustPaneSize { "Down", 3 }, pane)
+end)
+
+wezterm.on("resize-up", function(window, pane)
+  window:perform_action(act.AdjustPaneSize { "Up", 3 }, pane)
+end)
+
+wezterm.on("resize-right", function(window, pane)
+  window:perform_action(act.AdjustPaneSize { "Right", 3 }, pane)
+end)
 
 -- Drag window using mouse
 config.mouse_bindings = {
+  {
+    event = { Drag = { streak = 1, button = 'Left' } },
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.StartWindowDrag,
+  },
   {
     event = { Drag = { streak = 1, button = 'Left' } },
     action = wezterm.action.StartWindowDrag,
