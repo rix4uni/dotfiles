@@ -200,6 +200,11 @@ end)
 config.mouse_bindings = {
   {
     event = { Drag = { streak = 1, button = 'Left' } },
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.StartWindowDrag,
+  },
+  {
+    event = { Drag = { streak = 1, button = 'Left' } },
     action = wezterm.action.StartWindowDrag,
   },
 }
