@@ -124,7 +124,7 @@ config.leader = { key = 'Space', mods = 'CTRL', timeout_milliseconds = 1000 }
 -- Hot-Key Configuration
 config.keys = {
   -- Maximize fullscreen
-  {key = 'm', mods = 'CTRL|LEADER', action = wezterm.action.ToggleFullScreen},
+  {key = 'F11', action = wezterm.action.ToggleFullScreen},
   {key = 'f', mods = 'ALT', action = wezterm.action.TogglePaneZoomState},
 
   -- Create a tab
