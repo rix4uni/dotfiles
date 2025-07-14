@@ -1,24 +1,11 @@
-format = """
-$directory\
-$git_branch\
-$git_status\
-$fill\
-$python\
-$lua\
-$nodejs\
-$golang\
-$haskell\
-$rust\
-$ruby\
-$aws\
-$docker_context\
-$jobs\
-$cmd_duration\
-$line_break\
-$character"""
-
+# Disable the blank line at the start of the prompt
 add_newline = true
+
+# Set 'foo' as custom color palette
 palette = "nord"
+
+# Move the directory to the second line
+format = """$directory$character$git_branch"""
 
 [directory]
 style = 'bold fg:dark_blue'
