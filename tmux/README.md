@@ -7,5 +7,5 @@ wget -q https://raw.githubusercontent.com/rix4uni/dotfiles/refs/heads/main/tmux/
 
 ### For Termius
 ```
-wget -q https://raw.githubusercontent.com/rix4uni/dotfiles/refs/heads/main/tmux/.tmux-termius.conf -O ~/.tmux.conf
+wget -q https://raw.githubusercontent.com/rix4uni/dotfiles/refs/heads/main/tmux/tmux-termius.conf -O ~/.tmux.conf
 ```
