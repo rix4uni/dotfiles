@@ -1,15 +1,21 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
+
+wezterm.on("gui-startup", function(cmd)
+  local _, _, window = wezterm.mux.spawn_window(cmd or {})
+  window:gui_window():maximize()
+end)
+
 local act = wezterm.action
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
-config.default_domain = "WSL:Ubuntu-24.04"
+config.default_domain = "WSL:Ubuntu"
 config.wsl_domains = {
   {
-    name = 'WSL:Ubuntu-24.04',
-    distribution = 'Ubuntu-24.04',
+    name = 'WSL:Ubuntu',
+    distribution = 'Ubuntu',
     username = "root",
     default_cwd = "~",
     default_prog = {"bash"},
@@ -17,18 +23,18 @@ config.wsl_domains = {
 }
 
 -- Remove the title bar from the window
-config.window_decorations = "RESIZE"
+config.window_decorations = "TITLE | RESIZE"
 
 config.color_scheme = "Nord (Gogh)"
 config.default_cursor_style = "BlinkingBar"
 config.window_close_confirmation = "NeverPrompt"
 config.automatically_reload_config = true
-config.enable_tab_bar = false
+config.enable_tab_bar = true
 config.adjust_window_size_when_changing_font_size = false
 config.check_for_updates = false
 config.use_fancy_tab_bar = false
+config.tab_max_width = 25
 config.tab_bar_at_bottom = false
-config.hide_tab_bar_if_only_one_tab = true
 config.pane_focus_follows_mouse = true
 config.scrollback_lines = 5000
 
@@ -43,15 +49,11 @@ config.line_height = 0.9
 config.font = wezterm.font("JetBrains Mono", { weight = "Bold" })
 config.font_size = 12.5
 
--- Default Window Size
-config.initial_cols = 120
-config.initial_rows = 30
-
 -- === Background Layers ===
 -- 1. Image layer (wallpaper)
 local wallpaper_layer = {
   source = {
-    File = "C:\\Users\\rix4uni\\Downloads\\wallpaper\\yourname.jpg",
+    File = "D:\\wallpaper\\yourname.jpg",
   },
   hsb = {
     hue = 1.0,
@@ -126,14 +128,6 @@ config.hyperlink_rules = {
 config.keys = {
   -- Maximize fullscreen
   {key = 'F11', action = wezterm.action.ToggleFullScreen},
-}
-
--- Drag window using mouse
-config.mouse_bindings = {
-  {
-    event = { Drag = { streak = 1, button = 'Left' } },
-    action = wezterm.action.StartWindowDrag,
-  },
 }
 
 -- Return the configuration to wezterm
